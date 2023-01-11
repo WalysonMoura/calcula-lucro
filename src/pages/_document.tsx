@@ -1,13 +1,63 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import Document, {
+  DocumentContext,
+  DocumentInitialProps,
+  Html,
+  Main,
+  NextScript,
+} from "next/document";
+import Head from "next/head";
+import { ServerStyleSheet } from "styled-components";
 
-export default function Document() {
-  return (
-    <Html lang="en">
-      <Head />
-      <body>
-        <Main />
-        <NextScript />
-      </body>
-    </Html>
-  )
+export default class MyDocument extends Document {
+  static async getInitialProps(
+    ctx: DocumentContext
+  ): Promise<DocumentInitialProps> {
+    const sheet = new ServerStyleSheet();
+    const originalRenderPage = ctx.renderPage;
+
+    try {
+      ctx.renderPage = () =>
+        originalRenderPage({
+          enhanceApp: (App) => (props) =>
+            sheet.collectStyles(<App {...props} />),
+        });
+
+      const initialProps = await Document.getInitialProps(ctx);
+      return {
+        ...initialProps,
+        styles: [initialProps.styles, sheet.getStyleElement()],
+      };
+    } finally {
+      sheet.seal();
+    }
+  }
+
+  render(): JSX.Element {
+    return (
+      <Html lang="pt-br">
+        <Head>
+          <meta charSet="utf-8" />
+          <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+          <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+          />
+          <meta http-equiv="X-UA-Compatible" content="IE=7" />
+          <meta name="description" content="" />
+          <meta name="robots" content="index,follow" />
+
+          <link
+            rel="shortcut icon"
+            href="assets/img/favicon.ico"
+            type="image/x-icon"
+          />
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    );
+  }
 }
