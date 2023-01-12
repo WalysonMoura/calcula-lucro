@@ -1,9 +1,7 @@
-
 import * as Style from "../styles/pages/home";
 
 import Promotion from "../components/Promotion";
 import Pricing from "../components/Pricing";
-
 
 export default function Home() {
   return (

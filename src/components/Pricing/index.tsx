@@ -1,16 +1,23 @@
 import * as Style from "./style";
-import { useForm } from "react-hook-form";
+import { useForm,SubmitHandler } from "react-hook-form";
+
+type Inputs = {
+  exampleRequired: string,
+};
 
 export default function Pricing() {
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
   return (
     <Style.Conteiner>
-      <section>
+      <form>
         <h2>Margem de Lucro</h2>
         <div className="form-group">
           <div className="input-group">
@@ -44,9 +51,11 @@ export default function Pricing() {
             />
           </div>
         </div>
-      </section>
+        <button type="submit">Calular Margem</button>
 
-      <section>
+      </form>
+
+      <form >
         <h2>Markup</h2>
 
         <div className="form-Group">
@@ -109,10 +118,9 @@ export default function Pricing() {
             />
           </div>
         </div>
-      </section>
-      {/*}
-      <button onClick={() => handleSubmit(onsubmit)}></button>
-  {*/}
+
+        <button type="submit">Preço do Produto</button>
+      </form>
     </Style.Conteiner>
   );
 }
