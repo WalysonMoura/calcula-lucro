@@ -15,8 +15,6 @@ export default function Home() {
         <Promotion />
         <Pricing />
       </Style.Content>
-
-      
     </>
   );
 }
